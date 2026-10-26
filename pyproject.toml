@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-eval-kit"
+version = "0.1.0"
+description = "四臂对照 + 假完成指标：判断 Agent 改进到底有没有用"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "汤嘉颖" }]
+keywords = ["llm", "agent", "evaluation", "benchmark", "tool-use"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/laotang65666/agent-eval-kit"
+
+[tool.setuptools]
+packages = ["agent_eval"]
