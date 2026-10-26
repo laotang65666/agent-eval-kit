@@ -1,0 +1,53 @@
+name: selftest
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: 自检（判分器边界情况）
+        run: python selftest.py
+
+      - name: 离线演示（四臂全链路，不联网）
+        run: python examples/run_demo.py
+
+      - name: 确认没有第三方依赖
+        run: |
+          python - <<'PY'
+          import ast, pathlib, sys
+          stdlib = set(sys.stdlib_module_names)
+          bad = []
+          for f in pathlib.Path("agent_eval").rglob("*.py"):
+              tree = ast.parse(f.read_text(encoding="utf-8"))
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for a in node.names:
+                          top = a.name.split(".")[0]
+                          if top not in stdlib and top != "agent_eval":
+                              bad.append(f"{f}: import {top}")
+                  elif isinstance(node, ast.ImportFrom) and node.module:
+                      top = node.module.split(".")[0]
+                      if top not in stdlib and top != "agent_eval":
+                          bad.append(f"{f}: from {top}")
+          if bad:
+              print("\n".join(bad))
+              sys.exit("发现第三方依赖，本包应保持零依赖")
+          print("零第三方依赖 ✓")
+          PY

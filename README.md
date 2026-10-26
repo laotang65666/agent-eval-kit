@@ -1,5 +1,10 @@
 # agent-eval-kit
 
+[![selftest](https://github.com/laotang65666/agent-eval-kit/actions/workflows/selftest.yml/badge.svg)](https://github.com/laotang65666/agent-eval-kit/actions/workflows/selftest.yml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Deps](https://img.shields.io/badge/dependencies-0-brightgreen)](pyproject.toml)
+
 用**四臂对照**判断"你对 Agent 的改进到底有没有用"，并提供一个被普遍忽略的指标：**假完成（fake_success）**。
 
 零第三方依赖，只用 Python 3.10+ 标准库。
